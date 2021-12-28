@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use PDF;
 use File;
 use App\Company;
 use App\Employee;
@@ -66,9 +67,22 @@ class CompanyController extends Controller
      * @param  \App\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function show(Company $company)
+    public function show($id)
     {
         //
+        $company = Company::where('id',$id)->first();
+        $employee = Employee::orderBy('id', 'DESC')->with(['company'])->where('company_id',$id)->get();
+        
+        return view('company.show',compact('employee','company'));
+    }
+
+    //cetak pdf
+    public function pdf($id)
+    {
+        $employee = Employee::orderBy('id', 'DESC')->with(['company'])->where('company_id',$id)->get();
+ 
+    	$pdf = PDF::loadview('company.pdf', compact('employee'));
+    	return $pdf->download('Employee-data.pdf');
     }
 
     /**

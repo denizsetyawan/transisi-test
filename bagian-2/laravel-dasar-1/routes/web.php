@@ -20,6 +20,8 @@ Route::get('/', function () {
 Route::resource('employee','EmployeeController');
 Route::resource('company','CompanyController');
 
+Route::get('/print-pdf/{id}','CompanyController@pdf');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

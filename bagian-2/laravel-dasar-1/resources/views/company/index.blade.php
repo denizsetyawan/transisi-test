@@ -39,7 +39,9 @@
                     <td>
                         <img src="../../storage/app/company/{{ $item->logo }}" alt="{{ $item->logo }}" width="70">
                     </td>
-                    <td>{{ $item->name }}</td>
+                    <td>
+                        <a href="company/{{ $item->id }}">{{ $item->name }}</a>
+                    </td>
                     <td>{{ $item->email }}</td>
                     <td>{{ $item->website }}</td>
                     <td>
