@@ -4,6 +4,33 @@
 <div class="container">
 
     <a href="employee/create" class="btn btn-primary btn-sm rounded shadow mb-3">Add</a>
+    <button type="button" class="btn btn-success btn-sm rounded shadow mb-3" data-toggle="modal" data-target="#importExcel">Import</button>
+
+    <div class="modal fade" id="importExcel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form method="post" action="/import-employee" enctype="multipart/form-data">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Import Excel</h5>
+                    </div>
+                    <div class="modal-body">
+
+                        @csrf
+
+                        <label>Pilih file excel</label>
+                        <div class="form-group">
+                            <input type="file" name="file" required="required">
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Import</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
     @if (session('status'))
     <div class="alert alert-success" role="alert">

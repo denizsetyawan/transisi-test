@@ -21,6 +21,7 @@ Route::resource('employee','EmployeeController');
 Route::resource('company','CompanyController');
 
 Route::get('/print-pdf/{id}','CompanyController@pdf');
+Route::post('/import-employee','EmployeeController@import');
 
 Auth::routes();
 
