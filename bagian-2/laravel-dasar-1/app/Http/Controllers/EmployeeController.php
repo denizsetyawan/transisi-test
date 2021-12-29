@@ -6,6 +6,8 @@ use App\Employee;
 use App\Company;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreEmployee;
+use App\Imports\EmployeeImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class EmployeeController extends Controller
 {
@@ -48,7 +50,7 @@ class EmployeeController extends Controller
 			'name' => $request->name,
 			'company_id' => $request->company,
 			'email' => $request->email
-		]);  
+		]);
         
 		return redirect('employee')->with('status', 'Employee created!');
     }
@@ -117,4 +119,46 @@ class EmployeeController extends Controller
         
         return redirect('employee')->with('status', 'Employee deleted!');
     }
+
+    //import excel
+    public function import(Request $request)
+    {
+		$this->validate($request, [
+			'file' => 'required|mimes:csv,xls,xlsx'
+		]);
+
+		$file = $request->file('file');
+        // dd($file);
+		
+		$nama_file = rand().$file->getClientOriginalName();
+        $dest = 'storage/app/company/excel/';
+ 
+		$file->move($dest,$nama_file);
+ 
+		Excel::import(new EmployeeImport, public_path($dest.$nama_file));
+        
+        return redirect('employee')->with('status', 'Employee imported!');
+    }
+
+    //data company w/ ajax
+    public function getCompany(Request $request){
+
+        $search = $request->search;
+
+            if($search == ''){
+                $employees = Company::orderby('name','asc')->select('id','name')->limit(5)->get();
+            }else{
+                $employees = Company::orderby('name','asc')->select('id','name')->where('name', 'like', '%' .$search . '%')->limit(5)->get();
+            }
+                $response = array();
+                foreach($employees as $employee){
+                $response[] = array(
+                        "id"=>$employee->id,
+                        "text"=>$employee->name
+                );
+            }
+
+            return response()->json($response);
+        }
+
 }

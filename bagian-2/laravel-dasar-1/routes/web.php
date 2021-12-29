@@ -20,6 +20,10 @@ Route::get('/', function () {
 Route::resource('employee','EmployeeController');
 Route::resource('company','CompanyController');
 
+Route::get('/print-pdf/{id}','CompanyController@pdf');
+Route::post('/import-employee','EmployeeController@import');
+Route::post('/getCompany','EmployeeController@getCompany')->name('employees.getCompany');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
